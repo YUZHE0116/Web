@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Home Page</title>
+    <!-- Include Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Reset some default styles */
+        body, p, h1, h2, h3, h4, h5, h6 {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url('https://gcore.jsdelivr.net/gh/YUZHE0116/tuchuang@main/tuchuang/qingyan.png') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 200vh;
+            text-align: center;
+            position: relative;
+            transition: background 0.3s ease, filter 0.3s ease;
+            filter: brightness(1);
+        }
+        body.day-mode {
+            background: url('https://gcore.jsdelivr.net/gh/YUZHE0116/tuchuang@main/tuchuang/bingjian.jpg') no-repeat center center fixed;
+            background-size: cover;
+            filter: brightness(1.2);
+        }
+        .overlay {
+            background: rgba(0, 0, 0, 0.6);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            gap: 20px;
+            width: 100%;
+            position: absolute;
+            top: 40vh;
+        }
+        .search-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        .search-box {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 4px 0 0 4px;
+            font-size: 16px;
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.3);
+            color: white;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .search-box::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .search-box:focus {
+            background-color: rgba(255, 255, 255, 0.5);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+        .search-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            outline: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .search-button:hover {
+            background: rgba(0, 0, 0, 0.5);
+            transform: scale(1.05);
+        }
+        .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .link {
+            background-color: rgba(0, 0, 0, 0.1);
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #007BFF;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .link:hover {
+            background-color: rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+        }
+        .clock {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            font-size: 2em;
+            z-index: 1;
+            font-family: 'Courier New', Courier, monospace;
+            color: #FFFFFF;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+        .mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            background: none;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            outline: none;
+            transition: transform 0.3s ease;
+        }
+        .mode-toggle i.fa-sun {
+            color: yellow;
+        }
+        .mode-toggle i.fa-moon {
+            color: blue;
+        }
+        .mode-toggle:hover {
+            transform: scale(1.05);
+        }
+        .content {
+            min-height: 100px;
+            width: 100%;
+        }
+        .transparent-blocks {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+            padding-bottom: 20px;
+            position: absolute;
+            top: 110vh;
+        }
+        .block {
+            position: relative;
+            border-radius: 10px;
+            width: 200px;
+            height: 200px;
+            text-align: center;
+            font-size: 1.2em;
+            color: white;
+            overflow: hidden;
+            transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+        }
+        .block img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .block .text {
+            position: relative;
+            margin-top: 20px;
+            z-index: 1;
+        }
+        .block:hover {
+            transform: scale(1.2);
+            z-index: 1;
+        }
+        .block:not(:hover) {
+            transform: scale(0.8);
+        }
+        .block-title {
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        body.dark-mode {
+            background-color: #121212;
+            color: white;
+        }
+        .search-box.dark-mode {
+            background-color: rgba(51, 51, 51, 0.3);
+            color: white;
+        }
+        .search-box.dark-mode:focus {
+            background-color: rgba(51, 51, 51, 0.5);
+            border-color: rgba(51, 51, 51, 0.8);
+        }
+        .search-button.dark-mode {
+            background: rgba(51, 51, 51, 0.3);
+        }
+        .search-button.dark-mode:hover {
+            background: rgba(51, 51, 51, 0.5);
+        }
+        .link.dark-mode {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #007BFF;
+        }
+        .link.dark-mode:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .block.dark-mode {
+            background: rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="day-mode">
+    <div class="overlay"></div>
+    <button class="mode-toggle" id="mode-toggle"><i class="fas fa-moon"></i></button>
+    <div class="clock" id="clock"></div>
+    <div class="container">
+        <div class="search-container">
+            <input type="text" id="search-query" class="search-box" placeholder="Enter your search query...">
+            <button class="search-button" onclick="performSearch()">Search</button>
+        </div>
+        <div class="links">
+            <a href="https://www.csdn.net/" class="link" target="_blank">CSDN</a>
+            <a href="https://www.fomal.cc/" class="link" target="_blank">Fomal.cc</a>
+            <a href="https://github.com/" class="link" target="_blank">GitHub</a>
+            <a href="https://www.bilibili.com/" class="link" target="_blank">Bilibili</a>
+        </div>
+    </div>
+    <div class="transparent-blocks">
+        <div class="block">
+            <div class="block-title">游戏王</div>
+            <img src="https://gcore.jsdelivr.net/gh/YUZHE0116/tuchuang@main/tuchuang/youxiwang.jpg" alt="游戏王">
+        </div>
+        <div class="block">
+            <div class="block-title">旅游/摄影</div>
+            <img src="https://gcore.jsdelivr.net/gh/YUZHE0116/tuchuang@main/tuchuang/lvxing.jpg" alt="旅游/摄影">
+        </div>
+        <div class="block">
+            <div class="block-title">嵌入式</div>
+            <img src="https://gcore.jsdelivr.net/gh/YUZHE0116/tuchuang@main/tuchuang/qianrushi.png" alt="嵌入式">
+        </div>
+        <div class="block">
+            <div class="block-title">电影</div>
+            <img src="https://gcore.jsdelivr.net/gh/YUZHE0116/tuchuang@main/tuchuang/diany.jpg" alt="电影">
+        </div>
+    </div>
+    <div class="content"></div> <!-- Placeholder content to enable scrolling -->
+
+    <script>
+        function performSearch() {
+            const query = document.getElementById('search-query').value;
+            if (query) {
+                const url = 'https://www.bing.com/search?q=' + encodeURIComponent(query);
+                window.open(url, '_blank');
+            } else {
+                alert('Please enter a search query.');
+            }
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const timeString = `${hours}:${minutes}:${seconds}`;
+            document.getElementById('clock').textContent = timeString;
+        }
+
+        function toggleMode() {
+            document.body.classList.toggle('dark-mode');
+            document.body.classList.toggle('day-mode');
+            const modeToggle = document.getElementById('mode-toggle');
+            modeToggle.innerHTML = document.body.classList.contains('dark-mode') 
+                ? '<i class="fas fa-sun"></i>' 
+                : '<i class="fas fa-moon"></i>';
+        }
+
+        document.getElementById('mode-toggle').addEventListener('click', toggleMode);
+
+        setInterval(updateClock, 1000); // Update clock every second
+        updateClock(); // Initial call to display clock immediately
+    </script>
+</body>
+</html>
